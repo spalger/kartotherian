@@ -6,7 +6,6 @@ var core = require('kartotherian-core');
 var info = require('../package.json');
 
 module.exports = function(app) {
-
     return Promise.try(function () {
         core.init(app, info.kartotherian, pathLib.resolve(__dirname, '..'),
             function (module) {
