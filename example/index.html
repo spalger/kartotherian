@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <title>tiles.elastic.co test</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://www.elastic.co/favicon-32x32.png" />
+    <link rel="stylesheet" href="leaflet/leaflet.css"/>
+    <style>
+      html, body, #map {
+        margin: 0px;
+        height: 100%;
+      }
+
+      #zoom-level {
+        margin: 10px;
+        padding: 10px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 1000;
+        background: #ddd;
+      }
+    </style>
+</head>
+<body>
+
+<!-- Map placeholder -->
+<div id="map"></div>
+
+<!-- Widget to display zoom level in the upper right corner of the map -->
+<div id='zoom-level'>Zoom Level: 7</div>
+
+<!-- Load Leaflet -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+<!-- Optional - changes URL to reflect the current location on the map -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-hash/0.2.1/leaflet-hash.js"></script>
+<!-- Main code for the demo map -->
+<script>
+  // Allow user to change style via the ?s=xxx URL parameter
+  // Uses "osm-intl" as the default style
+  var match = location.search.match(/s=([^&\/]*)/);
+  var style = (match && match[1]) || 'default';
+
+  var map = L
+  .map('map')
+  .setView([40.75, -73.96], 4);
+
+  L
+  .tileLayer('http://54.183.186.251:6533/v1/default/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: (
+        'tiles.elastic.co test | ' +
+        'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      ),
+      id: 'map-1'
+  })
+  .addTo(map);
+
+  // Add a km/miles scale
+  L.control.scale().addTo(map);
+
+  // Update the zoom level label
+  map.on('zoomend', function () {
+      document.getElementById('zoom-level').innerHTML = 'Zoom Level: ' + map.getZoom();
+  });
+
+  // Add current location to URL hash
+  var hash = new L.Hash(map);
+</script>
+
+</body>
+</html>

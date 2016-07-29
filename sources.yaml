@@ -1,0 +1,75 @@
+gen:
+  public: true
+  formats: [pbf]
+  uri: bridge://
+  xml:
+    npm: ["osm-bright-source", "data.xml"]
+  xmlSetDataSource:
+    if:
+      dbname: gis
+      host: ''
+      type: postgis
+    set:
+      host: {var: osmdb-host}
+      port: {var: osmdb-port}
+      user: {var: osmdb-user}
+      password: {var: osmdb-pass}
+      dbname: {var: osmdb-dbname}
+
+# View tiles as generated directly from the database. Don't view zoom0-5
+default:
+  public: true
+  formats: [png]
+  scales: []
+  uri: vector://
+  xml:
+    loader: osm-bright-style
+  xmlSetParams:
+    source: {ref: gen}
+
+# Filter out any small tiles without significant data on or after zoom 10
+substgen:
+  public: true
+  formats: [pbf]
+  uri: substantial://
+  params:
+    source: {ref: gen}
+    minzoom: 10
+    minsize: 500
+    layers: [water, landuse]
+
+# If tile has been filtered out by substgen, use overzoom to recreate it
+substgenoz:
+  public: true
+  formats: [pbf]
+  uri: overzoom://
+  params:
+    source: {ref: substgen}
+
+# View tiles from generator, without the insignificant ones (will show blank squares)
+substgenview:
+  public: true
+  formats: [png,json,headers,svg,jpeg]
+  scales: []
+  static: true
+  maxheight: 2048
+  maxwidth: 2048
+  uri: vector://
+  xml:
+    loader: osm-bright-style
+  xmlSetParams:
+    source: {ref: substgen}
+
+# View tiles from generator, and use overzoom for any filtered out ones
+substgenozview:
+  public: true
+  formats: [png,json,headers,svg,jpeg]
+  scales: []
+  static: true
+  maxheight: 2048
+  maxwidth: 2048
+  uri: vector://
+  xml:
+    loader: osm-bright-style
+  xmlSetParams:
+    source: {ref: substgenoz}

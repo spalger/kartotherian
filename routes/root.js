@@ -36,11 +36,11 @@ router.get('/robots.txt', function(req, res) {
  */
 router.get('/', function(req, res, next) {
 
-    if(!(req.query || {}).hasOwnProperty('spec')) {
-        next();
-    } else {
-        res.json(app.conf.spec);
-    }
+  if (req.query.hasOwnProperty('spec')) {
+      res.json(app.conf.spec);
+  } else {
+      res.redirect('https://www.elastic.co/elastic-tile-service');
+  }
 
 });
 
@@ -56,4 +56,3 @@ module.exports = function(appObj) {
     };
 
 };
-
