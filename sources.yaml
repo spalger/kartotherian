@@ -7,11 +7,19 @@ pbfstore:
     cp: [{var: cassandra-host }]
     createIfMissing: true
 
+pbfoverzoom:
+  public: false
+  formats: [pbf]
+  url: overzoom://
+  params:
+    source: {ref:pbfstore}
+
 default:
   public: true
   formats: [png]
+  maxzoom: 18
   uri: vector://
   xml:
     loader: osm-bright-style
   xmlSetParams:
-    source: {ref: pbfstore}
+    source: {ref: pbfoverzoom}
