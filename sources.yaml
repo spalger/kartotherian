@@ -1,3 +1,21 @@
+pbfgen:
+  public: false
+  formats: [pbf]
+  uri: bridge://
+  xml:
+    npm: ["osm-bright-source", "data.xml"]
+  xmlSetDataSource:
+    if:
+      dbname: gis
+      host: ''
+      type: postgis
+    set:
+      host: {var: osmdb-host}
+      port: {var: osmdb-port}
+      user: {var: osmdb-user}
+      password: {var: osmdb-pass}
+      dbname: {var: osmdb-dbname}
+
 pbfstore:
   public: false
   formats: [pbf]
@@ -7,12 +25,17 @@ pbfstore:
     cp: [{var: cassandra-host }]
     createIfMissing: true
 
-pbfoverzoom:
+autogenpbf:
   public: false
   formats: [pbf]
-  url: overzoom://
+  uri: autogen://
   params:
-    source: {ref:pbfstore}
+    storage: {ref: pbfstore}
+    generator: {ref: pbfgen}
+    # mingen: 0
+    # maxgen: 18
+    # minstore: 0
+    # maxstore: 18
 
 default:
   public: true
@@ -22,4 +45,4 @@ default:
   xml:
     loader: osm-bright-style
   xmlSetParams:
-    source: {ref: pbfoverzoom}
+    source: {ref: autogenpbf}
