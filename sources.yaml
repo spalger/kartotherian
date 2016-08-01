@@ -32,10 +32,10 @@ autogenpbf:
   params:
     storage: {ref: pbfstore}
     generator: {ref: pbfgen}
-    # mingen: 0
-    # maxgen: 18
-    # minstore: 0
-    # maxstore: 18
+    mingen: 0
+    maxgen: 18
+    minstore: 0
+    maxstore: 18
 
 default:
   public: true
