@@ -46,3 +46,13 @@ default:
     loader: osm-bright-style
   xmlSetParams:
     source: {ref: autogenpbf}
+
+forcegen:
+  public: true
+  formats: [png]
+  maxzoom: 18
+  uri: vector://
+  xml:
+    loader: osm-bright-style
+  xmlSetParams:
+    source: {ref: pbfgen}
