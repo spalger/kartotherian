@@ -59,7 +59,7 @@
     "express": "^4.13.4",
     "js-yaml": "^3.6.0",
     "preq": "^0.4.9",
-    "service-runner": "^1.2.2"
+    "service-runner": "git+https://github.com/spalger/service-runner.git#estiles"
     ,
     "mapnik": "~3.5.0",
     "tilelive": "~5.12.2",
